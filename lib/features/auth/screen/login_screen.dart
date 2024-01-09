@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../../../core/common/sign_in_button.dart';
 import '../../../core/constants/constants.dart';
 import '../../../theme/pallete.dart';
 
@@ -44,7 +45,8 @@ class LoginScreen extends StatelessWidget {
           Padding(
               padding: const EdgeInsets.all(16.0),
               child: Image.asset(Constants.loginEmotePath, height: 400)),
-          const SizedBox(height: 20)
+          const SizedBox(height: 20),
+          const SignInButton()
         ],
       ),
     );
