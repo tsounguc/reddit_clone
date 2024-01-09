@@ -42,6 +42,8 @@ class Pallete {
       backgroundColor: whiteColor,
     ),
     primaryColor: redColor,
-    colorScheme: const ColorScheme.light(background: whiteColor),
+    colorScheme: const ColorScheme.light(
+      background: whiteColor,
+    ),
   );
 }
