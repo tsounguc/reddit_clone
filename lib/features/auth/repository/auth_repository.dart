@@ -1,6 +1,17 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+
+import '../../../core/providers/firebase_providers.dart';
+
+// Provider
+final authRepositoryProvider = Provider(
+  (ref) => AuthRepository(
+      firestore: ref.read(firestoreProvider),
+      auth: ref.read(authProvider),
+      googleSignIn: ref.read(googleSignInProvider)),
+);
 
 // Auth repository is going to contain all the logic for the Firebase calls
 // This also where we receive errors from the outside and throw it to the controller to handle
