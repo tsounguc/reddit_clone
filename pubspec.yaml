@@ -34,6 +34,18 @@ dependencies:
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
   cupertino_icons: ^1.0.2
+  # This is to connect our app to the firebase backend
+  firebase_core: ^2.24.2
+  # This is to store files
+  firebase_storage: ^11.6.0
+  # This to be as database
+  cloud_firestore: ^4.14.0
+  # This is for authenticating use
+  firebase_auth: ^4.16.0
+  # This is to display a google sign in pop up
+  google_sign_in: ^6.1.6
+  # This is for statemanagement
+  flutter_riverpod: ^2.4.9
 
 dev_dependencies:
   flutter_test:
