@@ -43,19 +43,25 @@ class AuthRepository {
         idToken: googleAuth?.idToken,
         accessToken: googleAuth?.accessToken,
       );
+
       UserCredential userCredential =
           await _auth.signInWithCredential(credential);
+
       var user = userCredential.user;
-      UserModel userModel = UserModel(
-        name: user?.displayName ?? 'No Name',
-        profilePic: user?.photoURL ?? Constants.avatarDefault,
-        banner: Constants.bannerDefault,
-        uid: user?.uid ?? '',
-        isAuthenticated: true,
-        karma: 0,
-        awards: [],
-      );
-      await _users.doc(user!.uid).set(userModel.toMap());
+
+      UserModel userModel;
+      if (userCredential.additionalUserInfo!.isNewUser) {
+        userModel = UserModel(
+          name: user?.displayName ?? 'No Name',
+          profilePic: user?.photoURL ?? Constants.avatarDefault,
+          banner: Constants.bannerDefault,
+          uid: user?.uid ?? '',
+          isAuthenticated: true,
+          karma: 0,
+          awards: [],
+        );
+        await _users.doc(user!.uid).set(userModel.toMap());
+      }
     } catch (E) {
       print(E);
     }
