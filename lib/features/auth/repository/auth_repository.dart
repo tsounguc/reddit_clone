@@ -5,6 +5,7 @@ import 'package:google_sign_in/google_sign_in.dart';
 import 'package:reddit_clone/models/user_model.dart';
 
 import '../../../core/constants/constants.dart';
+import '../../../core/constants/firebase_constants.dart';
 import '../../../core/providers/firebase_providers.dart';
 
 // Provider
@@ -31,6 +32,9 @@ class AuthRepository {
         _firestore = firestore,
         _googleSignIn = googleSignIn;
 
+  CollectionReference get _users =>
+      _firestore.collection(FirebaseConstants.userCollection);
+
   void signInWithGoogle() async {
     try {
       final GoogleSignInAccount? googleUser = await _googleSignIn.signIn();
@@ -51,7 +55,7 @@ class AuthRepository {
         karma: 0,
         awards: [],
       );
-      print(userCredential.user?.email);
+      await _users.doc(user!.uid).set(userModel.toMap());
     } catch (E) {
       print(E);
     }
