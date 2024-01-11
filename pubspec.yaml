@@ -46,6 +46,7 @@ dependencies:
   google_sign_in: ^6.1.6
   # This is for statemanagement
   flutter_riverpod: ^2.4.9
+  fpdart:
 
 dev_dependencies:
   flutter_test:
