@@ -8,23 +8,29 @@ import '../../../models/user_model.dart';
 final userProvider = StateProvider<UserModel?>((ref) => null);
 
 // Provider
-final authControllerProvider = Provider(((ref) => AuthController(
-      authRepository: ref.read(authRepositoryProvider),
-      ref: ref,
-    )));
+final authControllerProvider =
+    StateNotifierProvider<AuthController, bool>(((ref) => AuthController(
+          authRepository: ref.read(authRepositoryProvider),
+          ref: ref,
+        )));
 
-class AuthController {
+class AuthController extends StateNotifier<bool> {
   final AuthRepository _authRepository;
   final Ref _ref;
   AuthController({required AuthRepository authRepository, required Ref ref})
       : _authRepository = authRepository,
-        _ref = ref;
+        _ref = ref,
+        super(false);
 
   void signInWithGoogle(BuildContext context) async {
-    final user = await _authRepository.signInWithGoogle();
-    user.fold(
-        (l) => showSnackBar(context, l.message),
-        (userModel) =>
-            _ref.read(userProvider.notifier).update((state) => userModel));
+    state = true;
+    final userModel = await _authRepository.signInWithGoogle();
+
+    userModel.fold(
+      (failure) => showSnackBar(context, failure.message),
+      (updatedUserModel) => _ref
+          .read(userProvider.notifier)
+          .update((previdousUserModel) => updatedUserModel),
+    );
   }
 }
