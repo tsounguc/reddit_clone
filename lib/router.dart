@@ -7,12 +7,12 @@ import 'features/home/screens/home_screen.dart';
 
 // LoggedOut
 final loggedOutRoute = RouteMap(routes: {
-  '/': (routeData) => const MaterialPage(child: LoginScreen()),
+  '/': (_) => const MaterialPage(child: LoginScreen()),
 });
 
 // LoggedIn
 final loggedInRoute = RouteMap(routes: {
-  '/': (routeData) => const MaterialPage(child: HomeScreen()),
+  '/': (_) => const MaterialPage(child: HomeScreen()),
   '/create-commnuinty': (_) =>
       const MaterialPage(child: CreateCommunityScreen()),
 });
