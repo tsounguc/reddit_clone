@@ -47,6 +47,7 @@ dependencies:
   # This is for statemanagement
   flutter_riverpod: ^2.4.9
   fpdart:
+  routemaster: ^1.0.1
 
 dev_dependencies:
   flutter_test:
