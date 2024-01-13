@@ -44,7 +44,7 @@ class CommunityListDarwer extends ConsumerWidget {
                           }),
                     );
                   },
-                  error: (error, stackTrack) =>
+                  error: (error, stackTrace) =>
                       ErrorText(error: error.toString()),
                   loading: () => const Loader(),
                 )
