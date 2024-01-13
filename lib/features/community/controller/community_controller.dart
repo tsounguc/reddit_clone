@@ -8,25 +8,28 @@ import '../../../models/community_model.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../repository/community_repository.dart';
 
-final communityControllerProvider = Provider(
+final communityControllerProvider =
+    StateNotifierProvider<CommunityController, bool>(
   (ref) => CommunityController(
     communityRepository: ref.read(communityRepositoryProvider),
     ref: ref,
   ),
 );
 
-class CommunityController {
+class CommunityController extends StateNotifier<bool> {
   final CommunityRepository _communityRepository;
   final Ref _ref;
   CommunityController(
       {required CommunityRepository communityRepository, required Ref ref})
       : _communityRepository = communityRepository,
-        _ref = ref;
+        _ref = ref,
+        super(false);
 
   void createCommnity(
     String name,
     BuildContext context,
   ) async {
+    state = true;
     final uid = _ref.read(userProvider)?.uid ?? '';
     Community community = Community(
       id: name,
@@ -37,6 +40,7 @@ class CommunityController {
       mods: [],
     );
     final result = await _communityRepository.createCommnity(community);
+    state = false;
     result.fold(
       (failure) => showSnackBar(context, failure.message),
       (r) {
