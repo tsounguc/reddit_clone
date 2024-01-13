@@ -4,6 +4,7 @@ import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/loader.dart';
+import '../../../models/community_model.dart';
 import '../../community/controller/community_controller.dart';
 
 class CommunityListDarwer extends ConsumerWidget {
@@ -11,6 +12,10 @@ class CommunityListDarwer extends ConsumerWidget {
 
   void navigateToCreateCommunity(BuildContext context) {
     Routemaster.of(context).push('/create-community');
+  }
+
+  void navigateToCommunity(BuildContext context, Community community) {
+    Routemaster.of(context).push('/r/${community.name}');
   }
 
   @override
@@ -39,7 +44,8 @@ class CommunityListDarwer extends ConsumerWidget {
                               title: Text('r/${userCommnunity.name}'),
                               trailing:
                                   const Icon(Icons.arrow_forward_ios_outlined),
-                              onTap: () {},
+                              onTap: () =>
+                                  navigateToCommunity(context, userCommnunity),
                             );
                           }),
                     );
