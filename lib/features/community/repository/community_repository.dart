@@ -36,7 +36,7 @@ class CommunityRepository {
   Stream<List<Community>> getUserCommunities(String uid) {
     return _communities
         .where('menbers', arrayContains: uid)
-        .snapshots()
+        .snapshots() // This is a query snapshot
         .map((event) {
       List<Community> userCommunities = [];
       for (var doc in event.docs) {
@@ -45,6 +45,13 @@ class CommunityRepository {
         userCommunities.add(community);
       }
       return userCommunities;
+    });
+  }
+
+  Stream<Community> getCommunityByName(String name) {
+    // the snapshot her is a document snapshot
+    return _communities.doc(name).snapshots().map((event) {
+      return Community.fromMap(event.data() as Map<String, dynamic>);
     });
   }
 
