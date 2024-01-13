@@ -16,6 +16,10 @@ final communityControllerProvider =
   ),
 );
 
+final getUserCommunitiesProvider = StreamProvider(
+  (ref) => ref.watch(communityControllerProvider.notifier).getUserCommunities(),
+);
+
 class CommunityController extends StateNotifier<bool> {
   final CommunityRepository _communityRepository;
   final Ref _ref;
@@ -37,7 +41,7 @@ class CommunityController extends StateNotifier<bool> {
       banner: Constants.bannerDefault,
       avatar: Constants.avatarDefault,
       members: [uid],
-      mods: [],
+      mods: [uid],
     );
     final result = await _communityRepository.createCommnity(community);
     state = false;
@@ -48,5 +52,10 @@ class CommunityController extends StateNotifier<bool> {
         Routemaster.of(context).pop();
       },
     );
+  }
+
+  Stream<List<Community>> getUserCommunities() {
+    final uid = _ref.read(userProvider)?.uid ?? '';
+    return _communityRepository.getUserCommunities(uid);
   }
 }
