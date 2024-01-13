@@ -31,24 +31,23 @@ class CommunityListDarwer extends ConsumerWidget {
             ),
             ref.watch(getUserCommunitiesProvider).when(
                   data: (userCommunities) {
-                    return Expanded(
-                      child: ListView.builder(
-                          itemCount: userCommunities.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            final userCommnunity = userCommunities[index];
-                            return ListTile(
-                              leading: CircleAvatar(
-                                backgroundImage:
-                                    NetworkImage(userCommnunity.avatar),
-                              ),
-                              title: Text('r/${userCommnunity.name}'),
-                              trailing:
-                                  const Icon(Icons.arrow_forward_ios_outlined),
-                              onTap: () =>
-                                  navigateToCommunity(context, userCommnunity),
-                            );
-                          }),
-                    );
+                    return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: userCommunities.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final userCommnunity = userCommunities[index];
+                          return ListTile(
+                            leading: CircleAvatar(
+                              backgroundImage:
+                                  NetworkImage(userCommnunity.avatar),
+                            ),
+                            title: Text('r/${userCommnunity.name}'),
+                            trailing:
+                                const Icon(Icons.arrow_forward_ios_outlined),
+                            onTap: () =>
+                                navigateToCommunity(context, userCommnunity),
+                          );
+                        });
                   },
                   error: (error, stackTrace) =>
                       ErrorText(error: error.toString()),
