@@ -29,7 +29,7 @@ class CommunityController extends StateNotifier<bool> {
         _ref = ref,
         super(false);
 
-  void createCommnity(
+  void createCommunity(
     String name,
     BuildContext context,
   ) async {

@@ -23,7 +23,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
   }
 
   void createCommunity() {
-    ref.read(communityControllerProvider.notifier).createCommnity(
+    ref.read(communityControllerProvider.notifier).createCommunity(
           communityNameController.text.trim(),
           context,
         );
