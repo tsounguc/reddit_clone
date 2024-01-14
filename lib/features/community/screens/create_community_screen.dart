@@ -24,7 +24,6 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
   }
 
   void createCommunity() {
-    final currentContext = ref.read(globalKeyProvider).currentContext;
     ref.read(communityControllerProvider.notifier).createCommunity(
           communityNameController.text.trim(),
           context,
