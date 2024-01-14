@@ -4,7 +4,7 @@ import 'package:routemaster/routemaster.dart';
 
 import 'features/community/screens/community_screen.dart';
 import 'features/community/screens/create_community_screen.dart';
-import 'features/community/screens/edit_community.dart';
+import 'features/community/screens/edit_community_screen.dart';
 import 'features/community/screens/mod_tools_screen.dart';
 import 'features/home/screens/home_screen.dart';
 
