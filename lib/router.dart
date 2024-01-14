@@ -22,6 +22,6 @@ final loggedInRoute = RouteMap(routes: {
       MaterialPage(child: CommunityScreen(name: route.pathParameters['name']!)),
   '/mod-tools/:name': (route) =>
       MaterialPage(child: ModToolsScreen(name: route.pathParameters['name']!)),
-  '/edit-community': (route) => MaterialPage(
+  '/edit-community/:name': (route) => MaterialPage(
       child: EditCommunityScreen(name: route.pathParameters['name']!)),
 });
