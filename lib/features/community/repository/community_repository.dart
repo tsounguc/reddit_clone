@@ -35,7 +35,7 @@ class CommunityRepository {
 
   Stream<List<Community>> getUserCommunities(String uid) {
     return _communities
-        .where('menbers', arrayContains: uid)
+        .where('members', arrayContains: uid)
         .snapshots() // This is a query snapshot
         .map((event) {
       List<Community> userCommunities = [];

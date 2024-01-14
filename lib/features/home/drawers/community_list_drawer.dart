@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/common/error_text.dart';
+import 'package:reddit_clone/theme/pallete.dart';
 import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/loader.dart';
@@ -11,6 +12,7 @@ class CommunityListDarwer extends ConsumerWidget {
   const CommunityListDarwer({super.key});
 
   void navigateToCreateCommunity(BuildContext context) {
+    Routemaster.of(context).pop();
     Routemaster.of(context).push('/create-community');
   }
 
@@ -41,9 +43,12 @@ class CommunityListDarwer extends ConsumerWidget {
                               backgroundImage:
                                   NetworkImage(userCommnunity.avatar),
                             ),
-                            title: Text('r/${userCommnunity.name}'),
-                            trailing:
-                                const Icon(Icons.arrow_forward_ios_outlined),
+                            title: Text(
+                              'r/${userCommnunity.name}',
+                              style: TextStyle(color: Pallete.whiteColor),
+                            ),
+                            // trailing:
+                            //     const Icon(Icons.arrow_forward_ios_outlined),
                             onTap: () =>
                                 navigateToCommunity(context, userCommnunity),
                           );

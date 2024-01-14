@@ -34,12 +34,12 @@ class AuthController extends StateNotifier<bool> {
   // User is from firebase_auth
   Stream<User?> get authStateChange => _authRepository.authStateChange;
 
-  void signInWithGoogle(BuildContext context) async {
+  void signInWithGoogle(BuildContext? context) async {
     state = true;
     final userModel = await _authRepository.signInWithGoogle();
     state = false;
     userModel.fold(
-      (failure) => showSnackBar(context, failure.message),
+      (failure) => showSnackBar(context!, failure.message),
       (updatedUserModel) => _ref
           .read(userProvider.notifier)
           .update((previdousUserModel) => updatedUserModel),

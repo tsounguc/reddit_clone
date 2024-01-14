@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/features/community/controller/community_controller.dart';
 
 import '../../../core/common/loader.dart';
+import '../../../core/constants/global_key_provider.dart';
 import '../../../theme/pallete.dart';
 
 class CreateCommunityScreen extends ConsumerStatefulWidget {
@@ -23,6 +24,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
   }
 
   void createCommunity() {
+    final currentContext = ref.read(globalKeyProvider).currentContext;
     ref.read(communityControllerProvider.notifier).createCommunity(
           communityNameController.text.trim(),
           context,
@@ -56,7 +58,7 @@ class _CreateCommunityScreenState extends ConsumerState<CreateCommunityScreen> {
                   ),
                   const SizedBox(height: 30),
                   ElevatedButton(
-                    onPressed: () => createCommunity,
+                    onPressed: () => createCommunity(),
                     style: ElevatedButton.styleFrom(
                         backgroundColor: Pallete.blueColor,
                         minimumSize: const Size(double.infinity, 50),

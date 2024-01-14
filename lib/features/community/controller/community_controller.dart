@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 
 import '../../../core/constants/constants.dart';
+import '../../../core/constants/global_key_provider.dart';
 import '../../../core/utils.dart';
 import '../../../models/community_model.dart';
 import '../../auth/controller/auth_controller.dart';
@@ -40,6 +41,7 @@ class CommunityController extends StateNotifier<bool> {
   ) async {
     state = true;
     final uid = _ref.read(userProvider)?.uid ?? '';
+
     Community community = Community(
       id: name,
       name: name,

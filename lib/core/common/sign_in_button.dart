@@ -4,10 +4,12 @@ import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 
 import '../../theme/pallete.dart';
 import '../constants/constants.dart';
+import '../constants/global_key_provider.dart';
 
 class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
-  void signInWithGoogle(BuildContext context, WidgetRef ref) {
+  void signInWithGoogle(WidgetRef ref) {
+    final context = ref.read(globalKeyProvider).currentContext;
     ref.watch(authControllerProvider.notifier).signInWithGoogle(context);
   }
 
@@ -16,7 +18,7 @@ class SignInButton extends ConsumerWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 18),
       child: ElevatedButton.icon(
-        onPressed: () => signInWithGoogle(context, ref),
+        onPressed: () => signInWithGoogle(ref),
         icon: Image.asset(
           Constants.googlePath,
           width: 35,
