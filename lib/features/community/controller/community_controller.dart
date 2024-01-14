@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
 
 import '../../../core/constants/constants.dart';
-import '../../../core/constants/global_key_provider.dart';
 import '../../../core/utils.dart';
 import '../../../models/community_model.dart';
 import '../../auth/controller/auth_controller.dart';
