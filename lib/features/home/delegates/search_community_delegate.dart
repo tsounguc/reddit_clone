@@ -8,7 +8,7 @@ import '../../../models/community_model.dart';
 import '../../community/controller/community_controller.dart';
 
 class SearchCommunityDelegate extends SearchDelegate {
-  final Ref ref;
+  final WidgetRef ref;
   SearchCommunityDelegate(this.ref);
   @override
   List<Widget>? buildActions(BuildContext context) {
