@@ -111,4 +111,8 @@ class CommunityController extends StateNotifier<bool> {
   Stream<Community> getCommunityByName(String name) {
     return _communityRepository.getCommunityByName(name);
   }
+
+  Stream<List<Community>> searchCommunity(String query) {
+    return _communityRepository.searchCommunity(query);
+  }
 }
