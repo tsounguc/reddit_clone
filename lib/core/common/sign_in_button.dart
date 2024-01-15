@@ -4,7 +4,7 @@ import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 
 import '../../theme/pallete.dart';
 import '../constants/constants.dart';
-import '../constants/global_key_provider.dart';
+import '../providers/global_key_provider.dart';
 
 class SignInButton extends ConsumerWidget {
   const SignInButton({super.key});
