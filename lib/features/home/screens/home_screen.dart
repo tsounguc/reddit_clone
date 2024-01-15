@@ -26,6 +26,7 @@ class HomeScreen extends ConsumerWidget {
         ),
         title: const Text('Home'),
         actions: [
+          IconButton(onPressed: () {}, icon: const Icon(Icons.search)),
           IconButton(
             onPressed: () {},
             icon: CircleAvatar(
