@@ -74,6 +74,7 @@ class CommunityController extends StateNotifier<bool> {
     required BuildContext context,
     required Community community,
   }) async {
+    state = true;
     if (avatarFile != null) {
       final result = await _storageRepository.storeFile(
           path: 'community/avatar', id: community.id, file: avatarFile);
@@ -92,7 +93,7 @@ class CommunityController extends StateNotifier<bool> {
     }
 
     final result = await _communityRepository.editCommunity(community);
-
+    state = false;
     result.fold(
       (failure) => showSnackBar(context, failure.message),
       (r) {
