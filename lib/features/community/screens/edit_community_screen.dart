@@ -8,6 +8,7 @@ import 'package:reddit_clone/core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/utils.dart';
+import '../../../models/community_model.dart';
 import '../../../theme/pallete.dart';
 import '../controller/community_controller.dart';
 
@@ -39,6 +40,15 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
     }
   }
 
+  void save(Community community) {
+    ref.read(communityControllerProvider.notifier).editCommunity(
+          avatarFile: avatarFile,
+          bannerFile: bannerFile,
+          context: context,
+          community: community,
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ref.watch(getCommunityByNameProvider(widget.name)).when(
@@ -49,7 +59,7 @@ class _EditCommunityScreenState extends ConsumerState<EditCommunityScreen> {
                 centerTitle: false,
                 actions: [
                   TextButton(
-                    onPressed: () {},
+                    onPressed: () => save(community),
                     style: TextButton.styleFrom(
                         foregroundColor: Pallete.blueColor),
                     child: Text(
