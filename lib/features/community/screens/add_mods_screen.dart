@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
-import '../../../models/community_model.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../controller/community_controller.dart';
 
