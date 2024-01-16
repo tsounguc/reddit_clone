@@ -129,6 +129,16 @@ class CommunityController extends StateNotifier<bool> {
     );
   }
 
+  void addModerators(
+      String communityName, List<String> uids, BuildContext context) async {
+    final result =
+        await _communityRepository.addModerators(communityName, uids);
+    result.fold((failure) => showSnackBar(context, failure.message), (r) {
+      showSnackBar(context, 'Mods changes saved!');
+      Routemaster.of(context).pop();
+    });
+  }
+
   Stream<List<Community>> getUserCommunities(String uid) {
     debugPrint(uid);
     return _communityRepository.getUserCommunities(uid);
