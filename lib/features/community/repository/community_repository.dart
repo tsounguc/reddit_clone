@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:fpdart/fpdart.dart';
 import 'package:reddit_clone/core/constants/firebase_constants.dart';
@@ -62,6 +63,7 @@ class CommunityRepository {
   }
 
   Stream<List<Community>> getUserCommunities(String uid) {
+    debugPrint(uid);
     return _communities
         .where('members', arrayContains: uid)
         .snapshots() // This is a query snapshot
