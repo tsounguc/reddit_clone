@@ -73,6 +73,26 @@ class CommunityController extends StateNotifier<bool> {
     );
   }
 
+  void joinCommunity(Community community, BuildContext context) async {
+    state = true;
+    final user = _ref.read(userProvider)!;
+    final result =
+        await _communityRepository.joinCommunity(community.name, user.uid);
+    state = false;
+    result.fold((failure) => showSnackBar(context, failure.message),
+        (r) => showSnackBar(context, 'Joined successfully!'));
+  }
+
+  void leaveCommunity(Community community, BuildContext context) async {
+    state = true;
+    final user = _ref.read(userProvider)!;
+    final result =
+        await _communityRepository.leaveCommunity(community.name, user.uid);
+    state = false;
+    result.fold((failure) => showSnackBar(context, failure.message),
+        (r) => showSnackBar(context, 'Left successfully!'));
+  }
+
   void editCommunity({
     required File? avatarFile,
     required File? bannerFile,
