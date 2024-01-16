@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import '../../../theme/pallete.dart';
 import '../../auth/controller/auth_controller.dart';
 
 class ProfileDrawer extends ConsumerWidget {
@@ -34,7 +35,7 @@ class ProfileDrawer extends ConsumerWidget {
             ),
             ListTile(
               title: const Text('Log Out'),
-              leading: const Icon(Icons.person),
+              leading: Icon(Icons.logout, color: Pallete.redColor),
               onTap: () => logOut(ref),
             ),
             Switch.adaptive(
