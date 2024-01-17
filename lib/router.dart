@@ -8,6 +8,7 @@ import 'features/community/screens/create_community_screen.dart';
 import 'features/community/screens/edit_community_screen.dart';
 import 'features/community/screens/mod_tools_screen.dart';
 import 'features/home/screens/home_screen.dart';
+import 'features/post/screens/add_post_type_screen.dart';
 import 'features/user_profile/screens/edit_profile_screen.dart';
 import 'features/user_profile/screens/user_profile_screen.dart';
 
@@ -32,5 +33,7 @@ final loggedInRoute = RouteMap(routes: {
   '/user-profile/:uid': (route) =>
       MaterialPage(child: UserProfileScreen(uid: route.pathParameters['uid']!)),
   '/edit-profile/:uid': (route) =>
-      MaterialPage(child: EditProfileScreen(uid: route.pathParameters['uid']!))
+      MaterialPage(child: EditProfileScreen(uid: route.pathParameters['uid']!)),
+  '/add-post/:type': (route) => MaterialPage(
+      child: AddPostTypeScreen(type: route.pathParameters['type']!))
 });
