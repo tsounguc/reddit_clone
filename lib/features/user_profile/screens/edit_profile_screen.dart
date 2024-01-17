@@ -132,6 +132,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                       ),
                     ),
                     TextField(
+                      controller: nameController,
                       decoration: InputDecoration(
                         filled: true,
                         hintText: 'Name',
