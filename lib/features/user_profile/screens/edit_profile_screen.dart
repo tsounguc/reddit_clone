@@ -8,8 +8,10 @@ import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 import '../../../core/constants/constants.dart';
 import '../../../core/utils.dart';
+import '../../../models/user_model.dart';
 import '../../../theme/pallete.dart';
 import '../../auth/controller/auth_controller.dart';
+import '../controller/user_profile_controller.dart';
 
 class EditProfileScreen extends ConsumerStatefulWidget {
   final String uid;
@@ -52,6 +54,15 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
     }
   }
 
+  void save(UserModel user) {
+    ref.read(userProfileControllerProvider.notifier).editUserProfile(
+          profileFile: profileFile,
+          bannerFile: bannerFile,
+          context: context,
+          user: user.copyWith(name: nameController.text.trim()),
+        );
+  }
+
   @override
   Widget build(BuildContext context) {
     return ref.watch(getUserDataProvider(widget.uid)).when(
@@ -63,7 +74,7 @@ class _EditProfileScreenState extends ConsumerState<EditProfileScreen> {
                 actions: [
                   TextButton(
                     onPressed: () {
-                      // save(user);
+                      save(user);
                     },
                     style: TextButton.styleFrom(
                         foregroundColor: Pallete.blueColor),
