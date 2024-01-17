@@ -72,6 +72,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       endDrawer: const ProfileDrawer(),
       body: Constants.tabWidgets[_currentPage],
       bottomNavigationBar: CupertinoTabBar(
+        currentIndex: _currentPage,
         activeColor: currentTheme.iconTheme.color,
         backgroundColor: currentTheme.colorScheme.background,
         items: const [
