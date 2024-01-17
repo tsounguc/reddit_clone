@@ -8,6 +8,7 @@ import 'features/community/screens/create_community_screen.dart';
 import 'features/community/screens/edit_community_screen.dart';
 import 'features/community/screens/mod_tools_screen.dart';
 import 'features/home/screens/home_screen.dart';
+import 'features/user_profile/screens/user_profile_screen.dart';
 
 // LoggedOut
 final loggedOutRoute = RouteMap(routes: {
@@ -26,5 +27,7 @@ final loggedInRoute = RouteMap(routes: {
   '/edit-community/:name': (route) => MaterialPage(
       child: EditCommunityScreen(name: route.pathParameters['name']!)),
   '/add-mods/:name': (route) =>
-      MaterialPage(child: AddModsScreen(name: route.pathParameters['name']!))
+      MaterialPage(child: AddModsScreen(name: route.pathParameters['name']!)),
+  '/user-profile/:uid': (route) =>
+      MaterialPage(child: UserProfileScreen(uid: route.pathParameters['uid']!))
 });
