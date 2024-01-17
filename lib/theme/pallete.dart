@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class Pallete {
   // Colors
@@ -46,4 +48,31 @@ class Pallete {
       background: whiteColor,
     ),
   );
+}
+
+final themeNotifierProvider =
+    StateNotifierProvider<ThemeNotifier, ThemeData>((ref) {
+  return ThemeNotifier();
+});
+
+class ThemeNotifier extends StateNotifier<ThemeData> {
+  ThemeMode _mode;
+  ThemeNotifier({ThemeMode mode = ThemeMode.dark})
+      : _mode = mode,
+        super(Pallete.darkModeAppTheme) {
+    getTheme();
+  }
+  void getTheme() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    final theme = prefs.getString('theme');
+    if (theme == 'light') {
+      _mode = ThemeMode.light;
+      state = Pallete.lightModeAppTheme;
+    } else {
+      _mode = ThemeMode.dark;
+      state = Pallete.darkModeAppTheme;
+    }
+  }
+
+  void toggleTheme() async {}
 }
