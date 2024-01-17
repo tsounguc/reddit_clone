@@ -37,7 +37,7 @@ class AuthRepository {
         _googleSignIn = googleSignIn;
 
   CollectionReference get _users =>
-      _firestore.collection(FirebaseConstants.userCollection);
+      _firestore.collection(FirebaseConstants.usersCollection);
 
   // User is from firebase_auth
   Stream<User?> get authStateChange => _auth.authStateChanges();
