@@ -62,6 +62,9 @@ class ThemeNotifier extends StateNotifier<ThemeData> {
         super(Pallete.darkModeAppTheme) {
     getTheme();
   }
+
+  ThemeMode get mode => _mode;
+
   void getTheme() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     final theme = prefs.getString('theme');

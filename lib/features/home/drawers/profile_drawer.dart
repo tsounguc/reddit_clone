@@ -48,7 +48,8 @@ class ProfileDrawer extends ConsumerWidget {
               onTap: () => logOut(ref),
             ),
             Switch.adaptive(
-              value: true,
+              value: ref.watch(themeNotifierProvider.notifier).mode ==
+                  ThemeMode.dark,
               onChanged: (val) => toggleTheme(ref),
             )
           ],
