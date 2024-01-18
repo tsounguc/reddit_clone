@@ -12,6 +12,14 @@ import '../../../models/post_model.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../repository/post_repository.dart';
 
+final postControllerProvider = StateNotifierProvider<PostController, bool>(
+  (ref) => PostController(
+    postRepository: ref.watch(postRepositoryProvider),
+    storageRepository: ref.watch(storageRepositoryProvider),
+    ref: ref,
+  ),
+);
+
 class PostController extends StateNotifier<bool> {
   final PostRepository _postRepository;
   final StorageRepository _storageRepository;

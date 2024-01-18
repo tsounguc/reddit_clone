@@ -8,7 +8,7 @@ import '../../../core/providers/firebase_providers.dart';
 import '../../../core/type_defs.dart';
 import '../../../models/post_model.dart';
 
-final communityRepositoryProvider = Provider((ref) {
+final postRepositoryProvider = Provider((ref) {
   return PostRepository(firestore: ref.watch(firestoreProvider));
 });
 
