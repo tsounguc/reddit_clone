@@ -102,9 +102,8 @@ class PostCard extends ConsumerWidget {
                             ),
                           ),
                         if (isTypeLink)
-                          SizedBox(
-                            height: MediaQuery.of(context).size.height * 0.35,
-                            width: double.infinity,
+                          Padding(
+                            padding: const EdgeInsets.symmetric(horizontal: 18),
                             child: AnyLinkPreview(
                                 displayDirection:
                                     UIDirection.uiDirectionHorizontal,
