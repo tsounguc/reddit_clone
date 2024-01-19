@@ -1,12 +1,15 @@
 import 'package:any_link_preview/any_link_preview.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:reddit_clone/theme/pallete.dart';
 
 import '../../features/auth/controller/auth_controller.dart';
+import '../../features/community/controller/community_controller.dart';
 import '../../features/post/controller/post_controller.dart';
 import '../../models/post_model.dart';
 import '../constants/constants.dart';
+import 'loader.dart';
 
 class PostCard extends ConsumerWidget {
   final Post post;
@@ -128,6 +131,7 @@ class PostCard extends ConsumerWidget {
                             ),
                           ),
                         Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
                           children: [
                             Row(
                               children: [
@@ -166,11 +170,30 @@ class PostCard extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${post.commentCount == 0 ? 'Comment' : post.commentCount - post.commentCount}',
+                                  '${post.commentCount == 0 ? 'Comment' : post.commentCount}',
                                   style: const TextStyle(fontSize: 17),
                                 ),
                               ],
                             ),
+                            ref
+                                .watch(getCommunityByNameProvider(
+                                    post.communityName))
+                                .when(
+                                  data: (community) {
+                                    if (community.mods.contains(user.uid)) {
+                                      return IconButton(
+                                        onPressed: () {},
+                                        icon: const Icon(
+                                          Icons.admin_panel_settings,
+                                        ),
+                                      );
+                                    }
+                                    return const SizedBox();
+                                  },
+                                  error: (error, stackTrace) =>
+                                      ErrorText(error: error.toString()),
+                                  loading: () => const Loader(),
+                                ),
                           ],
                         )
                       ],
