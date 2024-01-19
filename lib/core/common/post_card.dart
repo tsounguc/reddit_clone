@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:reddit_clone/theme/pallete.dart';
+import 'package:routemaster/routemaster.dart';
 
 import '../../features/auth/controller/auth_controller.dart';
 import '../../features/community/controller/community_controller.dart';
@@ -25,6 +26,14 @@ class PostCard extends ConsumerWidget {
 
   void downvote(WidgetRef ref) async {
     ref.read(postControllerProvider.notifier).downvote(post);
+  }
+
+  void navigateToUserProfile(BuildContext context, String uid) async {
+    Routemaster.of(context).push('/user-profile/$uid');
+  }
+
+  void navigateToCommunity(BuildContext context) async {
+    Routemaster.of(context).push('/r/${post.communityName}');
   }
 
   @override
@@ -57,10 +66,13 @@ class PostCard extends ConsumerWidget {
                           children: [
                             Row(
                               children: [
-                                CircleAvatar(
-                                  backgroundImage:
-                                      NetworkImage(post.communityProfilePic),
-                                  radius: 16,
+                                GestureDetector(
+                                  onTap: () => navigateToCommunity(context),
+                                  child: CircleAvatar(
+                                    backgroundImage:
+                                        NetworkImage(post.communityProfilePic),
+                                    radius: 16,
+                                  ),
                                 ),
                                 Padding(
                                   padding: const EdgeInsets.only(left: 8.0),
@@ -75,9 +87,13 @@ class PostCard extends ConsumerWidget {
                                           fontWeight: FontWeight.bold,
                                         ),
                                       ),
-                                      Text(
-                                        'u/${post.username}',
-                                        style: const TextStyle(fontSize: 12),
+                                      GestureDetector(
+                                        onTap: () => navigateToUserProfile(
+                                            context, user.uid),
+                                        child: Text(
+                                          'u/${post.username}',
+                                          style: const TextStyle(fontSize: 12),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -182,7 +198,8 @@ class PostCard extends ConsumerWidget {
                                   data: (community) {
                                     if (community.mods.contains(user.uid)) {
                                       return IconButton(
-                                        onPressed: () {},
+                                        onPressed: () => navigateToUserProfile(
+                                            context, user.uid),
                                         icon: const Icon(
                                           Icons.admin_panel_settings,
                                         ),
