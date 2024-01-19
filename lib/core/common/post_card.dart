@@ -11,8 +11,17 @@ import '../constants/constants.dart';
 class PostCard extends ConsumerWidget {
   final Post post;
   const PostCard({super.key, required this.post});
-  void deletePost(BuildContext context, Post post, WidgetRef ref) {
+
+  void deletePost(BuildContext context, WidgetRef ref) {
     ref.read(postControllerProvider.notifier).deletePost(context, post);
+  }
+
+  void upvote(WidgetRef ref) async {
+    ref.read(postControllerProvider.notifier).upvote(post);
+  }
+
+  void downvote(WidgetRef ref) async {
+    ref.read(postControllerProvider.notifier).downvote(post);
   }
 
   @override
@@ -74,7 +83,7 @@ class PostCard extends ConsumerWidget {
                             ),
                             if (post.uid == user.uid)
                               IconButton(
-                                onPressed: () => deletePost(context, post, ref),
+                                onPressed: () => deletePost(context, ref),
                                 icon: Icon(
                                   Icons.delete,
                                   color: Pallete.redColor,
@@ -123,7 +132,7 @@ class PostCard extends ConsumerWidget {
                             Row(
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () => upvote(ref),
                                   icon: Icon(
                                     Constants.up,
                                     size: 30,
@@ -137,11 +146,11 @@ class PostCard extends ConsumerWidget {
                                   style: const TextStyle(fontSize: 17),
                                 ),
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: () => downvote(ref),
                                   icon: Icon(
                                     Constants.down,
                                     size: 30,
-                                    color: post.upvotes.contains(user.uid)
+                                    color: post.downvotes.contains(user.uid)
                                         ? Pallete.blueColor
                                         : null,
                                   ),
@@ -157,7 +166,7 @@ class PostCard extends ConsumerWidget {
                                   ),
                                 ),
                                 Text(
-                                  '${post.commentCount == 0 ? 'Comment' : post.upvotes.length - post.commentCount}',
+                                  '${post.commentCount == 0 ? 'Comment' : post.commentCount - post.commentCount}',
                                   style: const TextStyle(fontSize: 17),
                                 ),
                               ],
