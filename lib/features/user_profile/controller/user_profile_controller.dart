@@ -7,6 +7,7 @@ import 'package:routemaster/routemaster.dart';
 
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
+import '../../../models/post_model.dart';
 import '../../../models/user_model.dart';
 import '../repository/user_profile_repository.dart';
 
@@ -17,6 +18,11 @@ final userProfileControllerProvider =
     storageRepository: ref.watch(storageRepositoryProvider),
     ref: ref,
   ),
+);
+
+final getUserPostsProvider = StreamProvider.family(
+  (ref, String uid) =>
+      ref.watch(userProfileControllerProvider.notifier).getUserPosts(uid),
 );
 
 class UserProfileController extends StateNotifier<bool> {
@@ -66,5 +72,9 @@ class UserProfileController extends StateNotifier<bool> {
         Routemaster.of(context).pop();
       },
     );
+  }
+
+  Stream<List<Post>> getUserPosts(String uid) {
+    return _userProfileRepository.getUserPosts(uid);
   }
 }
