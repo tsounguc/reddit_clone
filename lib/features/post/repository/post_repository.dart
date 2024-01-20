@@ -33,7 +33,7 @@ class PostRepository {
     return _posts
         .where('communityName',
             whereIn: communities.map((community) => community.name).toList())
-        .orderBy('createAt', descending: true)
+        .orderBy('createdAt', descending: true)
         .snapshots()
         .map(
           (event) => event.docs

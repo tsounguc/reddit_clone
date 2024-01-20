@@ -8,6 +8,7 @@ import '../../../core/constants/constants.dart';
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
 import '../../../models/community_model.dart';
+import '../../../models/post_model.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../repository/community_repository.dart';
 
@@ -35,6 +36,10 @@ final searchCommunityProvider = StreamProvider.family(
       ref.watch(communityControllerProvider.notifier).searchCommunity(query),
 );
 
+final communityPostsProvider = StreamProvider.family(
+  (ref, String communityName) =>
+      ref.watch(communityControllerProvider.notifier).getCommunityPosts(communityName),
+);
 class CommunityController extends StateNotifier<bool> {
   final CommunityRepository _communityRepository;
   final StorageRepository _storageRepository;
@@ -151,4 +156,9 @@ class CommunityController extends StateNotifier<bool> {
   Stream<List<Community>> searchCommunity(String query) {
     return _communityRepository.searchCommunity(query);
   }
+
+   Stream<List<Post>> getCommunityPosts(String communityName) {
+    return _communityRepository.getCommunityPosts(communityName);
+  }
+
 }

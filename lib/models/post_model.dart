@@ -14,7 +14,7 @@ class Post {
   final String username;
   final String uid;
   final String type;
-  final DateTime createAt;
+  final DateTime createdAt;
   final List<String> awards;
   Post({
     required this.id,
@@ -29,7 +29,7 @@ class Post {
     required this.username,
     required this.uid,
     required this.type,
-    required this.createAt,
+    required this.createdAt,
     required this.awards,
   });
 
@@ -46,7 +46,7 @@ class Post {
     String? username,
     String? uid,
     String? type,
-    DateTime? createAt,
+    DateTime? createdAt,
     List<String>? awards,
   }) {
     return Post(
@@ -62,7 +62,7 @@ class Post {
       username: username ?? this.username,
       uid: uid ?? this.uid,
       type: type ?? this.type,
-      createAt: createAt ?? this.createAt,
+      createdAt: createdAt ?? this.createdAt,
       awards: awards ?? this.awards,
     );
   }
@@ -81,7 +81,7 @@ class Post {
       'username': username,
       'uid': uid,
       'type': type,
-      'createAt': createAt.millisecondsSinceEpoch,
+      'createdAt': createdAt.millisecondsSinceEpoch,
       'awards': awards,
     };
   }
@@ -100,14 +100,14 @@ class Post {
       username: map['username'] ?? '',
       uid: map['uid'] ?? '',
       type: map['type'] ?? '',
-      createAt: DateTime.fromMillisecondsSinceEpoch(map['createAt']),
+      createdAt: DateTime.fromMillisecondsSinceEpoch(map['createdAt']),
       awards: List<String>.from(map['awards']),
     );
   }
 
   @override
   String toString() {
-    return 'Post(id: $id, title: $title, link: $link, description: $description, communityName: $communityName, communityProfilePic: $communityProfilePic, upvotes: $upvotes, downvotes: $downvotes, commentCount: $commentCount, username: $username, uid: $uid, type: $type, createAt: $createAt, awards: $awards)';
+    return 'Post(id: $id, title: $title, link: $link, description: $description, communityName: $communityName, communityProfilePic: $communityProfilePic, upvotes: $upvotes, downvotes: $downvotes, commentCount: $commentCount, username: $username, uid: $uid, type: $type, createdAt: $createdAt, awards: $awards)';
   }
 
   @override
@@ -127,7 +127,7 @@ class Post {
         other.username == username &&
         other.uid == uid &&
         other.type == type &&
-        other.createAt == createAt &&
+        other.createdAt == createdAt &&
         listEquals(other.awards, awards);
   }
 
@@ -145,7 +145,7 @@ class Post {
         username.hashCode ^
         uid.hashCode ^
         type.hashCode ^
-        createAt.hashCode ^
+        createdAt.hashCode ^
         awards.hashCode;
   }
 }

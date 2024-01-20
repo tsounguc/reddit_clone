@@ -4,6 +4,7 @@ import 'package:reddit_clone/core/common/error_text.dart';
 import 'package:routemaster/routemaster.dart';
 
 import '../../../core/common/loader.dart';
+import '../../../core/common/post_card.dart';
 import '../../../models/community_model.dart';
 import '../../../theme/pallete.dart';
 import '../../auth/controller/auth_controller.dart';
@@ -120,7 +121,20 @@ class CommunityScreen extends ConsumerWidget {
                     )
                   ];
                 },
-                body: const Text('Displaying posts'),
+                body: ref.watch(communityPostsProvider(name)).when(
+                    data: (posts) {
+                      return ListView.builder(
+                        shrinkWrap: true,
+                        itemCount: posts.length,
+                        itemBuilder: (BuildContext context, int index) {
+                          final post = posts[index];
+                          return PostCard(post: post);
+                        },
+                      );
+                    },
+                    error: (error, stackTrace) =>
+                        ErrorText(error: error.toString()),
+                    loading: () => const Loader()),
               );
             },
             error: (error, stackTrace) => ErrorText(error: error.toString()),

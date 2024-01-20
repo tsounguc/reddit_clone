@@ -58,7 +58,7 @@ class PostController extends StateNotifier<bool> {
       username: user.name,
       uid: user.uid,
       type: 'text',
-      createAt: DateTime.now(),
+      createdAt: DateTime.now(),
       awards: [],
       description: description,
     );
@@ -92,7 +92,7 @@ class PostController extends StateNotifier<bool> {
       username: user.name,
       uid: user.uid,
       type: 'link',
-      createAt: DateTime.now(),
+      createdAt: DateTime.now(),
       awards: [],
       link: link,
     );
@@ -129,7 +129,7 @@ class PostController extends StateNotifier<bool> {
         username: user.name,
         uid: user.uid,
         type: 'image',
-        createAt: DateTime.now(),
+        createdAt: DateTime.now(),
         awards: [],
         link: imagePath,
       );
@@ -160,14 +160,13 @@ class PostController extends StateNotifier<bool> {
     );
   }
 
-  void upvote(Post post)async{
+  void upvote(Post post) async {
     final user = _ref.read(userProvider)!;
     _postRepository.upvote(post, user.uid);
   }
 
-  void downvote(Post post)async{
+  void downvote(Post post) async {
     final user = _ref.read(userProvider)!;
     _postRepository.downvote(post, user.uid);
   }
-
 }

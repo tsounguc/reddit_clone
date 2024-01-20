@@ -8,6 +8,7 @@ import 'package:reddit_clone/core/providers/firebase_providers.dart';
 
 import '../../../core/type_defs.dart';
 import '../../../models/community_model.dart';
+import '../../../models/post_model.dart';
 
 final communityRepositoryProvider = Provider((ref) {
   return CommunityRepository(firestore: ref.watch(firestoreProvider));
@@ -132,6 +133,20 @@ class CommunityRepository {
       return left(Failure(e.toString()));
     }
   }
+
+  Stream<List<Post>> getCommunityPosts(String communityName){
+    return _posts.where('communityName', isEqualTo: communityName).orderBy('createdAt', descending: true).snapshots().map((event){
+      List<Post> userPosts = [];
+      for (var doc in event.docs) {
+        Post post = Post.fromMap(doc.data() as Map<String, dynamic>);
+        userPosts.add(post);
+      }
+      return userPosts;
+    });
+  }
+
+  CollectionReference get _posts =>
+      _firestore.collection(FirebaseConstants.postsCollection);
 
   CollectionReference get _communities =>
       _firestore.collection(FirebaseConstants.communitiesCollection);
