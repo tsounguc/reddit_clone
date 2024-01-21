@@ -6,6 +6,7 @@ import '../../../core/constants/firebase_constants.dart';
 import '../../../core/failure.dart';
 import '../../../core/providers/firebase_providers.dart';
 import '../../../core/type_defs.dart';
+import '../../../models/comment_model.dart';
 import '../../../models/community_model.dart';
 import '../../../models/post_model.dart';
 
@@ -98,6 +99,21 @@ class PostRepository {
         );
   }
 
+  FutureVoid addComment(Comment comment) async {
+    try {
+      
+      return right(_comments.doc(comment.id).set(comment.toMap()));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
+
   CollectionReference get _posts =>
       _firestore.collection(FirebaseConstants.postsCollection);
+
+  CollectionReference get _comments =>
+      _firestore.collection(FirebaseConstants.commentsCollection);
 }
