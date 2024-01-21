@@ -35,6 +35,9 @@ class PostCard extends ConsumerWidget {
   void navigateToCommunity(BuildContext context) async {
     Routemaster.of(context).push('/r/${post.communityName}');
   }
+  void navigateToCommentScreen(BuildContext context) async {
+    Routemaster.of(context).push('/post/${post.id}/comments');
+  }
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -180,7 +183,7 @@ class PostCard extends ConsumerWidget {
                             Row(
                               children: [
                                 IconButton(
-                                  onPressed: () {},
+                                  onPressed: ()=> navigateToCommentScreen(context),
                                   icon: const Icon(
                                     Icons.comment,
                                   ),
