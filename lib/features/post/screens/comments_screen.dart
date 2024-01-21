@@ -26,6 +26,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(),
       body: ref.watch(getPostByIdProvider(widget.postId)).when(
             data: (post) {
               return Column(
@@ -34,8 +35,9 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                   TextField(
                     controller: commentController,
                     decoration: const InputDecoration(
-                      hintText: 'What are your thoughts?',
-                    ),
+                        hintText: 'What are your thoughts?',
+                        border: InputBorder.none,
+                        contentPadding: EdgeInsets.all(8)),
                   )
                 ],
               );
