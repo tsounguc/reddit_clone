@@ -5,6 +5,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
 import 'package:routemaster/routemaster.dart';
 
+import '../../../core/enums/enums.dart';
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../core/utils.dart';
 import '../../../models/post_model.dart';
@@ -76,5 +77,18 @@ class UserProfileController extends StateNotifier<bool> {
 
   Stream<List<Post>> getUserPosts(String uid) {
     return _userProfileRepository.getUserPosts(uid);
+  }
+
+  void updateUserKarma(UserKarma karma, BuildContext context) async {
+    state = true;
+    UserModel user = _ref.read(userProvider)!;
+    user = user.copyWith(karma: karma.karma);
+
+    final result = await _userProfileRepository.updateUserKarma(user);
+    state = false;
+    result.fold(
+      (failure) => showSnackBar(context, failure.message),
+      (r) => _ref.read(userProvider.notifier).update((previouUserData) => user),
+    );
   }
 }
