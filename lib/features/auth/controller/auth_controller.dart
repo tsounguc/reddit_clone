@@ -46,6 +46,18 @@ class AuthController extends StateNotifier<bool> {
     );
   }
 
+  void signInAsGuest(BuildContext? context) async {
+    state = true;
+    final userModel = await _authRepository.signInAsGuest();
+    state = false;
+    userModel.fold(
+      (failure) => showSnackBar(context!, failure.message),
+      (updatedUserModel) => _ref
+          .read(userProvider.notifier)
+          .update((previdousUserModel) => updatedUserModel),
+    );
+  }
+
   Stream<UserModel> getUserData(String uid) {
     return _authRepository.getUserData(uid);
   }
