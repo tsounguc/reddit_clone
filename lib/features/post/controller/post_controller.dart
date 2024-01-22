@@ -31,7 +31,7 @@ final getPostByIdProvider = StreamProvider.family(
       ref.watch(postControllerProvider.notifier).getPostById(postId),
 );
 
-final commentsOfPostPorovider = StreamProvider.family(
+final commentsOfPostProvider = StreamProvider.family(
   (ref, String postId) =>
       ref.watch(postControllerProvider.notifier).getCommentsOfPost(postId),
 );

@@ -6,6 +6,7 @@ import 'package:reddit_clone/features/post/controller/post_controller.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../models/post_model.dart';
+import 'widgets/comment_card.dart';
 
 class CommentsScreen extends ConsumerStatefulWidget {
   final String postId;
@@ -48,7 +49,19 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                         hintText: 'What are your thoughts?',
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(8)),
-                  )
+                  ),
+                  ref.watch(commentsOfPostProvider(widget.postId)).when(
+                        data: (comments) {
+                          return ListView.builder(
+                            itemCount: comments.length,
+                            itemBuilder: (context, index) =>
+                                CommentCard(comment: comments[index]),
+                          );
+                        },
+                        error: (error, stackTrace) =>
+                            ErrorText(error: error.toString()),
+                        loading: () => const Loader(),
+                      )
                 ],
               );
             },
