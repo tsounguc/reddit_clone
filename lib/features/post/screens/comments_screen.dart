@@ -37,15 +37,16 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
         post: post,
         username: user.name,
         userProfilePic: user.profilePic);
-    // setState(() {
-    //   // commentController.text = '';
-    // });
+    setState(() {
+      commentController.text = '';
+    });
   }
 
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       appBar: AppBar(),
       body: ref.watch(getPostByIdProvider(widget.postId)).when(
             data: (post) {
@@ -60,7 +61,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                         border: InputBorder.none,
                         contentPadding: EdgeInsets.all(8)),
                   ),
-                  ref.watch(commentsOfPostProvider(widget.postId)).when(
+                  ref.watch(postCommentsProvider(widget.postId)).when(
                         data: (comments) {
                           return Expanded(
                             child: ListView.builder(

@@ -112,8 +112,8 @@ class PostRepository {
     }
   }
 
-  Stream<List<Comment>> getCommentsOfPost(String postId) {
-    return _posts
+  Stream<List<Comment>> getPostComments(String postId) {
+    return _comments
         .where('postId', isEqualTo: postId)
         .orderBy('createdAt', descending: true)
         .snapshots()

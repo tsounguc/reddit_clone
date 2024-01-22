@@ -128,7 +128,7 @@ class PostCard extends ConsumerWidget {
                           ),
                           if (isTypeImage)
                             SizedBox(
-                              height: MediaQuery.of(context).size.height * 0.35,
+                              height: MediaQuery.of(context).size.height * 0.33,
                               width: double.infinity,
                               child: Image.network(
                                 post.link!,

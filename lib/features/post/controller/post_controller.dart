@@ -31,9 +31,9 @@ final getPostByIdProvider = StreamProvider.family(
       ref.watch(postControllerProvider.notifier).getPostById(postId),
 );
 
-final commentsOfPostProvider = StreamProvider.family(
+final postCommentsProvider = StreamProvider.family(
   (ref, String postId) =>
-      ref.watch(postControllerProvider.notifier).getCommentsOfPost(postId),
+      ref.watch(postControllerProvider.notifier).getPostComments(postId),
 );
 
 class PostController extends StateNotifier<bool> {
@@ -188,7 +188,9 @@ class PostController extends StateNotifier<bool> {
   void addComment(
       {required BuildContext context,
       required String text,
-      required Post post, required String username, required String userProfilePic}) async {
+      required Post post,
+      required String username,
+      required String userProfilePic}) async {
     String commentId = const Uuid().v1();
 
     Comment comment = Comment(
@@ -208,7 +210,7 @@ class PostController extends StateNotifier<bool> {
     );
   }
 
-  Stream<List<Comment>> getCommentsOfPost(String postId) {
-    return _postRepository.getCommentsOfPost(postId);
+  Stream<List<Comment>> getPostComments(String postId) {
+    return _postRepository.getPostComments(postId);
   }
 }

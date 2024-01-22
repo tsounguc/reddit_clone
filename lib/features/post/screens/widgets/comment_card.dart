@@ -15,7 +15,7 @@ class CommentCard extends ConsumerWidget {
     return Container(
         padding: const EdgeInsets.symmetric(
           vertical: 10,
-          horizontal: 4,
+          horizontal: 16,
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -30,7 +30,7 @@ class CommentCard extends ConsumerWidget {
                 ),
                 Expanded(
                     child: Padding(
-                  padding: const EdgeInsets.all(8.0),
+                  padding: const EdgeInsets.all(10.0),
                   child: Column(
                     mainAxisAlignment: MainAxisAlignment.start,
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -42,7 +42,7 @@ class CommentCard extends ConsumerWidget {
                         ),
                       ),
                       Text(
-                        '${comment.text}',
+                        comment.text,
                       ),
                     ],
                   ),
