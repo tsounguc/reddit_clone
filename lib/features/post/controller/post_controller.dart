@@ -188,8 +188,7 @@ class PostController extends StateNotifier<bool> {
   void addComment(
       {required BuildContext context,
       required String text,
-      required Post post}) async {
-    final user = _ref.read(userProvider)!;
+      required Post post, required String username, required String userProfilePic}) async {
     String commentId = const Uuid().v1();
 
     Comment comment = Comment(
@@ -197,8 +196,8 @@ class PostController extends StateNotifier<bool> {
       text: text,
       createdAt: DateTime.now(),
       postId: post.id,
-      username: user.name,
-      profilePic: user.profilePic,
+      username: username,
+      profilePic: userProfilePic,
     );
 
     final result = await _postRepository.addComment(comment);

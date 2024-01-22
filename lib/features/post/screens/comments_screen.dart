@@ -6,6 +6,8 @@ import 'package:reddit_clone/features/post/controller/post_controller.dart';
 
 import '../../../core/common/error_text.dart';
 import '../../../models/post_model.dart';
+import '../../../models/user_model.dart';
+import '../../auth/controller/auth_controller.dart';
 import 'widgets/comment_card.dart';
 
 class CommentsScreen extends ConsumerStatefulWidget {
@@ -25,16 +27,24 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
     commentController.dispose();
   }
 
-  void addComment(Post post) {
+  void addComment(
+    Post post,
+    UserModel user,
+  ) {
     ref.watch(postControllerProvider.notifier).addComment(
-        context: context, text: commentController.text.trim(), post: post);
-    setState(() {
-      commentController.text = '';
-    });
+        context: context,
+        text: commentController.text.trim(),
+        post: post,
+        username: user.name,
+        userProfilePic: user.profilePic);
+    // setState(() {
+    //   // commentController.text = '';
+    // });
   }
 
   @override
   Widget build(BuildContext context) {
+    final user = ref.watch(userProvider)!;
     return Scaffold(
       appBar: AppBar(),
       body: ref.watch(getPostByIdProvider(widget.postId)).when(
@@ -43,7 +53,7 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                 children: [
                   PostCard(post: post),
                   TextField(
-                    onSubmitted: (val) => addComment(post),
+                    onSubmitted: (val) => addComment(post, user),
                     controller: commentController,
                     decoration: const InputDecoration(
                         hintText: 'What are your thoughts?',
@@ -52,10 +62,13 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                   ),
                   ref.watch(commentsOfPostProvider(widget.postId)).when(
                         data: (comments) {
-                          return ListView.builder(
-                            itemCount: comments.length,
-                            itemBuilder: (context, index) =>
-                                CommentCard(comment: comments[index]),
+                          return Expanded(
+                            child: ListView.builder(
+                                shrinkWrap: true,
+                                itemCount: comments.length,
+                                itemBuilder: (context, index) {
+                                  return CommentCard(comment: comments[index]);
+                                }),
                           );
                         },
                         error: (error, stackTrace) =>
