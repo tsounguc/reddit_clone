@@ -28,6 +28,12 @@ class PostCard extends ConsumerWidget {
     ref.read(postControllerProvider.notifier).downvote(post);
   }
 
+  void awardPost(WidgetRef ref, String award, BuildContext context) async {
+    ref
+        .read(postControllerProvider.notifier)
+        .awardPost(post: post, award: award, context: context);
+  }
+
   void navigateToUserProfile(BuildContext context, String uid) async {
     Routemaster.of(context).push('/user-profile/$uid');
   }
@@ -240,9 +246,14 @@ class PostCard extends ConsumerWidget {
                                               int index) {
                                             final award = user.awards[index];
                                             return Padding(
-                                              padding: const EdgeInsets.all(8.0),
-                                              child: Image.asset(
-                                                  Constants.awards[award]!),
+                                              padding:
+                                                  const EdgeInsets.all(8.0),
+                                              child: GestureDetector(
+                                                onTap: () => awardPost(
+                                                    ref, award, context),
+                                                child: Image.asset(
+                                                    Constants.awards[award]!),
+                                              ),
                                             );
                                           },
                                         ),
