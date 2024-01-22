@@ -208,8 +208,9 @@ class PostCard extends ConsumerWidget {
                                       if (community.mods.contains(user.uid)) {
                                         return IconButton(
                                           onPressed: () =>
-                                              navigateToUserProfile(
-                                                  context, user.uid),
+                                              deletePost(context, ref),
+                                          // navigateToUserProfile(
+                                          //     context, user.uid),
                                           icon: const Icon(
                                             Icons.admin_panel_settings,
                                           ),
@@ -221,6 +222,10 @@ class PostCard extends ConsumerWidget {
                                         ErrorText(error: error.toString()),
                                     loading: () => const Loader(),
                                   ),
+                              IconButton(
+                                onPressed: () {},
+                                icon: const Icon(Icons.card_giftcard_outlined),
+                              ),
                             ],
                           )
                         ],
