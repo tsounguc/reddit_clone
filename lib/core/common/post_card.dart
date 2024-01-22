@@ -28,10 +28,10 @@ class PostCard extends ConsumerWidget {
     ref.read(postControllerProvider.notifier).downvote(post);
   }
 
-  void awardPost(WidgetRef ref, String award, BuildContext context) async {
-    ref
-        .read(postControllerProvider.notifier)
-        .awardPost(post: post, award: award, context: context);
+  void awardPost(WidgetRef ref, String award, BuildContext context,
+      String senderId) async {
+    ref.read(postControllerProvider.notifier).awardPost(
+        post: post, award: award, context: context, senderId: senderId);
   }
 
   void navigateToUserProfile(BuildContext context, String uid) async {
@@ -122,6 +122,20 @@ class PostCard extends ConsumerWidget {
                                 )
                             ],
                           ),
+                          if (post.awards.isNotEmpty) ...[
+                            const SizedBox(height: 5),
+                            SizedBox(
+                                height: 25,
+                                child: ListView.builder(
+                                    scrollDirection: Axis.horizontal,
+                                    itemCount: post.awards.length,
+                                    itemBuilder:
+                                        (BuildContext context, int index) {
+                                      return Image.asset(
+                                          Constants.awards[post.awards[index]]!,
+                                          height: 25);
+                                    }))
+                          ],
                           Padding(
                             padding: const EdgeInsets.only(top: 10, bottom: 10),
                             child: Text(
@@ -230,36 +244,42 @@ class PostCard extends ConsumerWidget {
                                   ),
                               IconButton(
                                 onPressed: () {
-                                  showDialog(
-                                    context: context,
-                                    builder: (context) => Dialog(
-                                      child: Padding(
-                                        padding: const EdgeInsets.all(8.0),
-                                        child: GridView.builder(
-                                          shrinkWrap: true,
-                                          gridDelegate:
-                                              const SliverGridDelegateWithFixedCrossAxisCount(
-                                            crossAxisCount: 4,
+                                  if (user.awards.isNotEmpty) {
+                                    showDialog(
+                                      context: context,
+                                      builder: (BuildContext dialogContext) =>
+                                          Dialog(
+                                        child: Padding(
+                                          padding: const EdgeInsets.all(8.0),
+                                          child: GridView.builder(
+                                            shrinkWrap: true,
+                                            gridDelegate:
+                                                const SliverGridDelegateWithFixedCrossAxisCount(
+                                              crossAxisCount: 4,
+                                            ),
+                                            itemCount: user.awards.length,
+                                            itemBuilder: (BuildContext context,
+                                                int index) {
+                                              final award = user.awards[index];
+                                              return Padding(
+                                                padding:
+                                                    const EdgeInsets.all(8.0),
+                                                child: GestureDetector(
+                                                  onTap: () => awardPost(
+                                                      ref,
+                                                      award,
+                                                      dialogContext,
+                                                      user.uid),
+                                                  child: Image.asset(
+                                                      Constants.awards[award]!),
+                                                ),
+                                              );
+                                            },
                                           ),
-                                          itemCount: user.awards.length,
-                                          itemBuilder: (BuildContext context,
-                                              int index) {
-                                            final award = user.awards[index];
-                                            return Padding(
-                                              padding:
-                                                  const EdgeInsets.all(8.0),
-                                              child: GestureDetector(
-                                                onTap: () => awardPost(
-                                                    ref, award, context),
-                                                child: Image.asset(
-                                                    Constants.awards[award]!),
-                                              ),
-                                            );
-                                          },
                                         ),
                                       ),
-                                    ),
-                                  );
+                                    );
+                                  }
                                 },
                                 icon: const Icon(Icons.card_giftcard_outlined),
                               ),

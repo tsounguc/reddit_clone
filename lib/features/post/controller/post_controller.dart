@@ -233,15 +233,16 @@ class PostController extends StateNotifier<bool> {
     required Post post,
     required String award,
     required BuildContext context,
+    required String senderId
   }) async {
-    final user = _ref.read(userProvider)!;
 
-    final result = await _postRepository.awardPost(post, award, user.uid);
+    final result = await _postRepository.awardPost(post, award, senderId);
 
     result.fold((failure) => showSnackBar(context, failure.message), (r) {
       _ref
           .read(userProfileControllerProvider.notifier)
           .updateUserKarma(UserKarma.awardPost);
+
       _ref.read(userProvider.notifier).update((userData) {
         userData?.awards.remove(award);
         return userData;
