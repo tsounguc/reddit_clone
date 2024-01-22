@@ -28,8 +28,12 @@ class UserProfileRepository {
     }
   }
 
-  Stream<List<Post>> getUserPosts(String uid){
-    return _posts.where('uid', isEqualTo: uid).orderBy('createdAt', descending: true).snapshots().map((event){
+  Stream<List<Post>> getUserPosts(String uid) {
+    return _posts
+        .where('uid', isEqualTo: uid)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map((event) {
       List<Post> userPosts = [];
       for (var doc in event.docs) {
         Post post = Post.fromMap(doc.data() as Map<String, dynamic>);
@@ -39,9 +43,19 @@ class UserProfileRepository {
     });
   }
 
+  FutureVoid updateUserKarma(UserModel user) async {
+    try {
+      return right(_users.doc(user.uid).update({'karma': user.karma}));
+    } on FirebaseException catch (e) {
+      throw e.message!;
+    } catch (e) {
+      return left(Failure(e.toString()));
+    }
+  }
+
   CollectionReference get _users =>
       _firestore.collection(FirebaseConstants.usersCollection);
-  
-   CollectionReference get _posts =>
+
+  CollectionReference get _posts =>
       _firestore.collection(FirebaseConstants.postsCollection);
 }
