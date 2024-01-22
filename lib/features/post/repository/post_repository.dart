@@ -101,7 +101,6 @@ class PostRepository {
 
   FutureVoid addComment(Comment comment) async {
     try {
-      
       return right(_comments.doc(comment.id).set(comment.toMap()));
     } on FirebaseException catch (e) {
       throw e.message!;
@@ -110,6 +109,21 @@ class PostRepository {
     }
   }
 
+  Stream<List<Comment>> getCommentsOfPost(String postId) {
+    return _posts
+        .where('postId', isEqualTo: postId)
+        .orderBy('createdAt', descending: true)
+        .snapshots()
+        .map(
+          (event) => event.docs
+              .map(
+                (e) => Comment.fromMap(
+                  e.data() as Map<String, dynamic>,
+                ),
+              )
+              .toList(),
+        );
+  }
 
   CollectionReference get _posts =>
       _firestore.collection(FirebaseConstants.postsCollection);
