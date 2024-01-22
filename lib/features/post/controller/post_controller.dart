@@ -31,6 +31,11 @@ final getPostByIdProvider = StreamProvider.family(
       ref.watch(postControllerProvider.notifier).getPostById(postId),
 );
 
+final commentsOfPostPorovider = StreamProvider.family(
+  (ref, String postId) =>
+      ref.watch(postControllerProvider.notifier).getCommentsOfPost(postId),
+);
+
 class PostController extends StateNotifier<bool> {
   final PostRepository _postRepository;
   final StorageRepository _storageRepository;
@@ -186,7 +191,7 @@ class PostController extends StateNotifier<bool> {
       required Post post}) async {
     final user = _ref.read(userProvider)!;
     String commentId = const Uuid().v1();
-    
+
     Comment comment = Comment(
       id: commentId,
       text: text,
@@ -202,5 +207,9 @@ class PostController extends StateNotifier<bool> {
       (failure) => showSnackBar(context, failure.message),
       (r) => null,
     );
+  }
+
+  Stream<List<Comment>> getCommentsOfPost(String postId) {
+    return _postRepository.getCommentsOfPost(postId);
   }
 }
