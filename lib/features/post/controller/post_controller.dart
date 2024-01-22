@@ -7,10 +7,12 @@ import 'package:reddit_clone/models/comment_model.dart';
 import 'package:routemaster/routemaster.dart';
 import 'package:uuid/uuid.dart';
 
+import '../../../core/enums/enums.dart';
 import '../../../core/providers/storage_repository_provider.dart';
 import '../../../models/community_model.dart';
 import '../../../models/post_model.dart';
 import '../../auth/controller/auth_controller.dart';
+import '../../user_profile/controller/user_profile_controller.dart';
 import '../repository/post_repository.dart';
 
 final postControllerProvider = StateNotifierProvider<PostController, bool>(
@@ -75,6 +77,9 @@ class PostController extends StateNotifier<bool> {
     );
 
     final result = await _postRepository.addPost(post);
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.textPost);
     state = false;
 
     result.fold((failure) => showSnackBar(context, failure.message), (r) {
@@ -109,6 +114,9 @@ class PostController extends StateNotifier<bool> {
     );
 
     final result = await _postRepository.addPost(post);
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.linkPost);
     state = false;
 
     result.fold((failure) => showSnackBar(context, failure.message), (r) {
@@ -146,6 +154,9 @@ class PostController extends StateNotifier<bool> {
       );
 
       final result = await _postRepository.addPost(post);
+      _ref
+          .read(userProfileControllerProvider.notifier)
+          .updateUserKarma(UserKarma.imagePost);
       state = false;
 
       result.fold((failure) => showSnackBar(context, failure.message), (r) {
@@ -163,7 +174,12 @@ class PostController extends StateNotifier<bool> {
   }
 
   void deletePost(BuildContext context, Post post) async {
+    state = true;
     final result = await _postRepository.deletePost(post);
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.deletePost);
+    state = false;
 
     result.fold(
       (failure) => showSnackBar(context, failure.message),
@@ -203,6 +219,9 @@ class PostController extends StateNotifier<bool> {
     );
 
     final result = await _postRepository.addComment(comment);
+    _ref
+        .read(userProfileControllerProvider.notifier)
+        .updateUserKarma(UserKarma.comment);
 
     result.fold(
       (failure) => showSnackBar(context, failure.message),

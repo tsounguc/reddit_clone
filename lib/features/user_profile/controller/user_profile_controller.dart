@@ -79,15 +79,15 @@ class UserProfileController extends StateNotifier<bool> {
     return _userProfileRepository.getUserPosts(uid);
   }
 
-  void updateUserKarma(UserKarma karma, BuildContext context) async {
+  void updateUserKarma(UserKarma userKarma) async {
     state = true;
     UserModel user = _ref.read(userProvider)!;
-    user = user.copyWith(karma: karma.karma);
+    user = user.copyWith(karma: user.karma + userKarma.karma);
 
     final result = await _userProfileRepository.updateUserKarma(user);
     state = false;
     result.fold(
-      (failure) => showSnackBar(context, failure.message),
+      (failure) => debugPrint(failure.message),
       (r) => _ref.read(userProvider.notifier).update((previouUserData) => user),
     );
   }
