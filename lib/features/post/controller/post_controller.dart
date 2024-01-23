@@ -28,6 +28,10 @@ final userPostsProvider = StreamProvider.family(
       ref.watch(postControllerProvider.notifier).fetchUserPosts(communities),
 );
 
+final guestPostsProvider = StreamProvider(
+  (ref) => ref.watch(postControllerProvider.notifier).fetchGuestPosts(),
+);
+
 final getPostByIdProvider = StreamProvider.family(
   (ref, String postId) =>
       ref.watch(postControllerProvider.notifier).getPostById(postId),
@@ -233,13 +237,11 @@ class PostController extends StateNotifier<bool> {
     );
   }
 
-  void awardPost({
-    required Post post,
-    required String award,
-    required BuildContext context,
-    required String senderId
-  }) async {
-
+  void awardPost(
+      {required Post post,
+      required String award,
+      required BuildContext context,
+      required String senderId}) async {
     final result = await _postRepository.awardPost(post, award, senderId);
 
     result.fold((failure) => showSnackBar(context, failure.message), (r) {
