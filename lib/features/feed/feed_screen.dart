@@ -14,21 +14,38 @@ class FeedScreen extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final user = ref.watch(userProvider)!;
-    return ref.watch(getUserCommunitiesProvider(user.uid)).when(
-          data: (communities) => ref.watch(userPostsProvider(communities)).when(
-                data: (posts) {
-                  return ListView.builder(
-                    itemCount: posts.length,
-                    itemBuilder: (context, index) {
-                      final post = posts[index];
-                      return PostCard(post: post);
-                    },
-                  );
-                },
-                error: (error, stackTrace) =>
-                    ErrorText(error: error.toString()),
-                loading: () => const Loader(),
-              ),
+    final isGuest = !user.isAuthenticated;
+    if (!isGuest) {
+      return ref.watch(getUserCommunitiesProvider(user.uid)).when(
+            data: (communities) =>
+                ref.watch(userPostsProvider(communities)).when(
+                      data: (posts) {
+                        return ListView.builder(
+                          itemCount: posts.length,
+                          itemBuilder: (context, index) {
+                            final post = posts[index];
+                            return PostCard(post: post);
+                          },
+                        );
+                      },
+                      error: (error, stackTrace) =>
+                          ErrorText(error: error.toString()),
+                      loading: () => const Loader(),
+                    ),
+            error: (error, stackTrace) => ErrorText(error: error.toString()),
+            loading: () => const Loader(),
+          );
+    }
+    return ref.watch(guestPostsProvider).when(
+          data: (posts) {
+            return ListView.builder(
+              itemCount: posts.length,
+              itemBuilder: (context, index) {
+                final post = posts[index];
+                return PostCard(post: post);
+              },
+            );
+          },
           error: (error, stackTrace) => ErrorText(error: error.toString()),
           loading: () => const Loader(),
         );
