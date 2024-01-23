@@ -34,10 +34,10 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
   }
 
   @override
-  Widget build(
-    BuildContext context,
-  ) {
-    final user = ref.watch(userProvider);
+  Widget build(BuildContext context) {
+    final user = ref.watch(userProvider)!;
+    final isGuest = !user.isAuthenticated;
+    print(isGuest);
     final currentTheme = ref.watch(themeNotifierProvider);
     return Scaffold(
       appBar: AppBar(
@@ -62,25 +62,27 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
           Builder(builder: (context) {
             return IconButton(
               onPressed: () => displayProfileDrawer(context),
-              icon: CircleAvatar(
-                  backgroundImage: NetworkImage(user?.profilePic ?? '')),
+              icon:
+                  CircleAvatar(backgroundImage: NetworkImage(user.profilePic)),
             );
           })
         ],
       ),
       drawer: const CommunityListDarwer(),
-      endDrawer: const ProfileDrawer(),
+      endDrawer: isGuest ? null : const ProfileDrawer(),
       body: Constants.tabWidgets[_currentPage],
-      bottomNavigationBar: CupertinoTabBar(
-        currentIndex: _currentPage,
-        activeColor: currentTheme.iconTheme.color,
-        backgroundColor: currentTheme.colorScheme.background,
-        items: const [
-          BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
-          BottomNavigationBarItem(icon: Icon(Icons.add), label: '')
-        ],
-        onTap: onPageChange,
-      ),
+      bottomNavigationBar: isGuest
+          ? null
+          : CupertinoTabBar(
+              currentIndex: _currentPage,
+              activeColor: currentTheme.iconTheme.color,
+              backgroundColor: currentTheme.colorScheme.background,
+              items: const [
+                BottomNavigationBarItem(icon: Icon(Icons.home), label: ''),
+                BottomNavigationBarItem(icon: Icon(Icons.add), label: '')
+              ],
+              onTap: onPageChange,
+            ),
     );
   }
 }
