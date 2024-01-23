@@ -7,10 +7,11 @@ import '../constants/constants.dart';
 import '../providers/global_key_provider.dart';
 
 class SignInButton extends ConsumerWidget {
-  const SignInButton({super.key});
+  final bool isFromLogin; 
+  const SignInButton({super.key, this.isFromLogin = true});
   void signInWithGoogle(WidgetRef ref) {
     final context = ref.read(globalKeyProvider).currentContext;
-    ref.watch(authControllerProvider.notifier).signInWithGoogle(context);
+    ref.watch(authControllerProvider.notifier).signInWithGoogle(context, isFromLogin);
   }
 
   @override
