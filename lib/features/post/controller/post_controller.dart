@@ -173,6 +173,10 @@ class PostController extends StateNotifier<bool> {
     return Stream.value([]);
   }
 
+  Stream<List<Post>> fetchGuestPosts() {
+    return _postRepository.fetchGuestPosts();
+  }
+
   void deletePost(BuildContext context, Post post) async {
     state = true;
     final result = await _postRepository.deletePost(post);
