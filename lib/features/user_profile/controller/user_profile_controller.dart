@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/features/auth/controller/auth_controller.dart';
@@ -42,21 +43,27 @@ class UserProfileController extends StateNotifier<bool> {
   void editUserProfile({
     required File? profileFile,
     required File? bannerFile,
+    required Uint8List? profileWebFile,
+    required Uint8List? bannerWebFile,
     required BuildContext context,
     required UserModel user,
   }) async {
     state = true;
-    if (profileFile != null) {
+    if (profileFile != null || profileWebFile != null) {
       final result = await _storageRepository.storeFile(
-          path: 'users/profile', id: user.uid, file: profileFile);
+        path: 'users/profile',
+        id: user.uid,
+        file: profileFile,
+        webFile: profileWebFile,
+      );
       result.fold(
         (failure) => showSnackBar(context, failure.message),
         (newProfilePic) => user = user.copyWith(profilePic: newProfilePic),
       );
     }
-    if (bannerFile != null) {
+    if (bannerFile != null || bannerWebFile != null) {
       final result = await _storageRepository.storeFile(
-          path: 'users/banner', id: user.uid, file: bannerFile);
+          path: 'users/banner', id: user.uid, file: bannerFile, webFile: bannerWebFile);
       result.fold(
         (failure) => showSnackBar(context, failure.message),
         (newBanner) => user = user.copyWith(banner: newBanner),

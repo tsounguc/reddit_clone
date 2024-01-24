@@ -1,6 +1,7 @@
 import 'dart:io';
 
 import 'package:dotted_border/dotted_border.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
@@ -8,6 +9,7 @@ import '../../../core/common/error_text.dart';
 import '../../../core/common/loader.dart';
 import '../../../core/utils.dart';
 import '../../../models/community_model.dart';
+import '../../../responsive/responsive.dart';
 import '../../../theme/pallete.dart';
 import '../../auth/controller/auth_controller.dart';
 import '../../community/controller/community_controller.dart';
@@ -27,26 +29,32 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
   TextEditingController descriptionController = TextEditingController();
   TextEditingController linkController = TextEditingController();
   File? imageFile;
+  Uint8List? imageWebFile;
   List<Community> communitiesList = [];
   Community? selectedCommunity;
 
-  void selectBannerImage() async {
+  void selectImage() async {
     final result = await pickImage();
 
     if (result != null) {
-      imageFile = File(result.files.first.path!);
+      if (kIsWeb) {
+        imageWebFile = result.files.first.bytes;
+      } else {
+        imageFile = File(result.files.first.path!);
+      }
     }
   }
 
   void sharePost() {
     if (widget.type == 'image' &&
-        imageFile != null &&
+        (imageFile != null || imageWebFile != null) &&
         titleController.text.isNotEmpty) {
       ref.read(postControllerProvider.notifier).shareImagePost(
             context: context,
             title: titleController.text.trim(),
             selectedCommunity: selectedCommunity ?? communitiesList[0],
-            file: imageFile!,
+            file: imageFile,
+            webFile: imageWebFile,
           );
     } else if (widget.type == 'link' &&
         titleController.text.isNotEmpty &&
@@ -103,122 +111,126 @@ class _AddPostTypeScreenState extends ConsumerState<AddPostTypeScreen> {
           ),
         ],
       ),
-      body: isLoading
-          ? const Loader()
-          : Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: titleController,
-                    decoration: InputDecoration(
-                      filled: true,
-                      hintText: 'Enter Title Here',
-                      focusedBorder: OutlineInputBorder(
-                        borderSide: const BorderSide(
-                          color: Colors.blue,
+      body: Responsive(
+        child: isLoading
+            ? const Loader()
+            : Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Column(
+                  children: [
+                    TextField(
+                      controller: titleController,
+                      decoration: InputDecoration(
+                        filled: true,
+                        hintText: 'Enter Title Here',
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: const BorderSide(
+                            color: Colors.blue,
+                          ),
+                          borderRadius: BorderRadius.circular(10),
                         ),
-                        borderRadius: BorderRadius.circular(10),
+                        border: InputBorder.none,
+                        contentPadding: const EdgeInsets.all(18),
                       ),
-                      border: InputBorder.none,
-                      contentPadding: const EdgeInsets.all(18),
+                      maxLength: 30,
                     ),
-                    maxLength: 30,
-                  ),
-                  const SizedBox(height: 10),
-                  if (isTypeImage)
-                    GestureDetector(
-                      onTap: selectBannerImage,
-                      child: DottedBorder(
-                        radius: const Radius.circular(10),
-                        borderType: BorderType.RRect,
-                        dashPattern: const [10, 4],
-                        strokeCap: StrokeCap.round,
-                        color: currentTheme.textTheme.bodyMedium!.color!,
-                        child: Container(
-                          width: double.infinity,
-                          height: 150,
-                          decoration: BoxDecoration(
+                    const SizedBox(height: 10),
+                    if (isTypeImage)
+                      GestureDetector(
+                        onTap: selectImage,
+                        child: DottedBorder(
+                          radius: const Radius.circular(10),
+                          borderType: BorderType.RRect,
+                          dashPattern: const [10, 4],
+                          strokeCap: StrokeCap.round,
+                          color: currentTheme.textTheme.bodyMedium!.color!,
+                          child: Container(
+                            width: double.infinity,
+                            height: 150,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: imageWebFile != null
+                                ? Image.memory(imageWebFile!)
+                                : imageFile != null
+                                    ? Image.file(imageFile!)
+                                    : const Center(
+                                        child: Icon(
+                                          Icons.camera_alt_outlined,
+                                          size: 40,
+                                        ),
+                                      ),
+                          ),
+                        ),
+                      ),
+                    if (isTypeText)
+                      TextField(
+                        controller: descriptionController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          hintText: 'Enter Description Here',
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.blue,
+                            ),
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          child: imageFile != null
-                              ? Image.file(imageFile!)
-                              : const Center(
-                                  child: Icon(
-                                    Icons.camera_alt_outlined,
-                                    size: 40,
-                                  ),
-                                ),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.all(18),
                         ),
+                        maxLines: null,
+                        minLines: 8,
                       ),
-                    ),
-                  if (isTypeText)
-                    TextField(
-                      controller: descriptionController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        hintText: 'Enter Description Here',
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.blue,
+                    if (isTypeLink)
+                      TextField(
+                        controller: linkController,
+                        decoration: InputDecoration(
+                          filled: true,
+                          hintText: 'Enter Link Here',
+                          focusedBorder: OutlineInputBorder(
+                            borderSide: const BorderSide(
+                              color: Colors.blue,
+                            ),
+                            borderRadius: BorderRadius.circular(10),
                           ),
-                          borderRadius: BorderRadius.circular(10),
+                          border: InputBorder.none,
+                          contentPadding: const EdgeInsets.all(18),
                         ),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.all(18),
                       ),
-                      maxLines: null,
-                      minLines: 8,
-                    ),
-                  if (isTypeLink)
-                    TextField(
-                      controller: linkController,
-                      decoration: InputDecoration(
-                        filled: true,
-                        hintText: 'Enter Link Here',
-                        focusedBorder: OutlineInputBorder(
-                          borderSide: const BorderSide(
-                            color: Colors.blue,
-                          ),
-                          borderRadius: BorderRadius.circular(10),
-                        ),
-                        border: InputBorder.none,
-                        contentPadding: const EdgeInsets.all(18),
+                    const SizedBox(height: 20),
+                    const Align(
+                      alignment: Alignment.topLeft,
+                      child: Text(
+                        'Select Community',
                       ),
                     ),
-                  const SizedBox(height: 20),
-                  const Align(
-                    alignment: Alignment.topLeft,
-                    child: Text(
-                      'Select Community',
-                    ),
-                  ),
-                  ref.watch(getUserCommunitiesProvider(user.uid)).when(
-                      data: (communities) {
-                        communitiesList = communities;
-                        if (communities.isEmpty) {
-                          return const SizedBox();
-                        }
-                        return DropdownButton(
-                          value: selectedCommunity ?? communities[0],
-                          items: communities
-                              .map((community) => DropdownMenuItem(
-                                  value: community,
-                                  child: Text(community.name)))
-                              .toList(),
-                          onChanged: (newCommunity) {
-                            setState(() {
-                              selectedCommunity = newCommunity;
-                            });
-                          },
-                        );
-                      },
-                      error: (error, stackTrace) =>
-                          ErrorText(error: error.toString()),
-                      loading: () => const Loader())
-                ],
+                    ref.watch(getUserCommunitiesProvider(user.uid)).when(
+                        data: (communities) {
+                          communitiesList = communities;
+                          if (communities.isEmpty) {
+                            return const SizedBox();
+                          }
+                          return DropdownButton(
+                            value: selectedCommunity ?? communities[0],
+                            items: communities
+                                .map((community) => DropdownMenuItem(
+                                    value: community,
+                                    child: Text(community.name)))
+                                .toList(),
+                            onChanged: (newCommunity) {
+                              setState(() {
+                                selectedCommunity = newCommunity;
+                              });
+                            },
+                          );
+                        },
+                        error: (error, stackTrace) =>
+                            ErrorText(error: error.toString()),
+                        loading: () => const Loader())
+                  ],
+                ),
               ),
-            ),
+      ),
     );
   }
 }

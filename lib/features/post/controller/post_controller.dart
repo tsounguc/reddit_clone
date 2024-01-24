@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/core/utils.dart';
@@ -133,12 +134,17 @@ class PostController extends StateNotifier<bool> {
       {required BuildContext context,
       required String title,
       required Community selectedCommunity,
-      required File file}) async {
+      required File? file,
+      required Uint8List? webFile}) async {
     state = true;
     String postId = const Uuid().v1();
     final user = _ref.read(userProvider)!;
     final imageResult = await _storageRepository.storeFile(
-        path: 'posts/${selectedCommunity.name}', id: postId, file: file);
+      path: 'posts/${selectedCommunity.name}',
+      id: postId,
+      file: file,
+      webFile: webFile,
+    );
     imageResult.fold((failure) => showSnackBar(context, failure.message),
         (imagePath) async {
       final Post post = Post(

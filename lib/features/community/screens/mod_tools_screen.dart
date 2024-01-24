@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:routemaster/routemaster.dart';
 
+import '../../../responsive/responsive.dart';
+
 class ModToolsScreen extends StatelessWidget {
   final String name;
   const ModToolsScreen({super.key, required this.name});
@@ -19,19 +21,21 @@ class ModToolsScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Mod Tools'),
       ),
-      body: Column(
-        children: [
-          ListTile(
-            leading: const Icon(Icons.add_moderator),
-            title: const Text('Add Moderators'),
-            onTap: () => navigateToAddModerators(context),
-          ),
-          ListTile(
-            leading: const Icon(Icons.edit),
-            title: const Text('Edit Community'),
-            onTap: () => navitageToEditCommunity(context),
-          ),
-        ],
+      body: Responsive(
+        child: Column(
+          children: [
+            ListTile(
+              leading: const Icon(Icons.add_moderator),
+              title: const Text('Add Moderators'),
+              onTap: () => navigateToAddModerators(context),
+            ),
+            ListTile(
+              leading: const Icon(Icons.edit),
+              title: const Text('Edit Community'),
+              onTap: () => navitageToEditCommunity(context),
+            ),
+          ],
+        ),
       ),
     );
   }

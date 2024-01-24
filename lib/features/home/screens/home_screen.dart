@@ -1,8 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:reddit_clone/features/home/drawers/profile_drawer.dart';
 import 'package:reddit_clone/theme/pallete.dart';
+import 'package:routemaster/routemaster.dart';
 
 import '../../../core/constants/constants.dart';
 import '../../auth/controller/auth_controller.dart';
@@ -33,11 +35,15 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
     Scaffold.of(context).openEndDrawer();
   }
 
+  void navigateToAddPostScreen(BuildContext context) {
+    Routemaster.of(context).push('/add-post');
+  }
+
   @override
   Widget build(BuildContext context) {
     final user = ref.watch(userProvider)!;
     final isGuest = !user.isAuthenticated;
-    print(isGuest);
+    // print(isGuest);
     final currentTheme = ref.watch(themeNotifierProvider);
     return Scaffold(
       appBar: AppBar(
@@ -59,6 +65,11 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
                 );
               },
               icon: const Icon(Icons.search)),
+          if (kIsWeb)
+            IconButton(
+              onPressed: () => navigateToAddPostScreen(context),
+              icon: const Icon(Icons.add),
+            ),
           Builder(builder: (context) {
             return IconButton(
               onPressed: () => displayProfileDrawer(context),
@@ -71,7 +82,7 @@ class _HomeScreenState extends ConsumerState<HomeScreen> {
       drawer: const CommunityListDarwer(),
       endDrawer: isGuest ? null : const ProfileDrawer(),
       body: Constants.tabWidgets[_currentPage],
-      bottomNavigationBar: isGuest
+      bottomNavigationBar: isGuest || kIsWeb
           ? null
           : CupertinoTabBar(
               currentIndex: _currentPage,

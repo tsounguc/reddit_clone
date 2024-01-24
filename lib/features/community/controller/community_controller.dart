@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:routemaster/routemaster.dart';
@@ -37,9 +38,11 @@ final searchCommunityProvider = StreamProvider.family(
 );
 
 final communityPostsProvider = StreamProvider.family(
-  (ref, String communityName) =>
-      ref.watch(communityControllerProvider.notifier).getCommunityPosts(communityName),
+  (ref, String communityName) => ref
+      .watch(communityControllerProvider.notifier)
+      .getCommunityPosts(communityName),
 );
+
 class CommunityController extends StateNotifier<bool> {
   final CommunityRepository _communityRepository;
   final StorageRepository _storageRepository;
@@ -102,21 +105,29 @@ class CommunityController extends StateNotifier<bool> {
   void editCommunity({
     required File? avatarFile,
     required File? bannerFile,
+    required Uint8List? avatarWebFile,
+    required Uint8List? bannerWebFile,
     required BuildContext context,
     required Community community,
   }) async {
     state = true;
-    if (avatarFile != null) {
+    if (avatarFile != null || avatarWebFile != null) {
       final result = await _storageRepository.storeFile(
-          path: 'community/avatar', id: community.id, file: avatarFile);
+          path: 'community/avatar',
+          id: community.id,
+          file: avatarFile,
+          webFile: avatarWebFile);
       result.fold(
         (failure) => showSnackBar(context, failure.message),
         (newAvatar) => community = community.copyWith(avatar: newAvatar),
       );
     }
-    if (bannerFile != null) {
+    if (bannerFile != null || bannerWebFile != null) {
       final result = await _storageRepository.storeFile(
-          path: 'community/banner', id: community.id, file: bannerFile);
+          path: 'community/banner',
+          id: community.id,
+          file: bannerFile,
+          webFile: bannerWebFile);
       result.fold(
         (failure) => showSnackBar(context, failure.message),
         (newBanner) => community = community.copyWith(banner: newBanner),
@@ -157,8 +168,7 @@ class CommunityController extends StateNotifier<bool> {
     return _communityRepository.searchCommunity(query);
   }
 
-   Stream<List<Post>> getCommunityPosts(String communityName) {
+  Stream<List<Post>> getCommunityPosts(String communityName) {
     return _communityRepository.getCommunityPosts(communityName);
   }
-
 }

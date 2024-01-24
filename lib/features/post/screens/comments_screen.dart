@@ -7,6 +7,7 @@ import 'package:reddit_clone/features/post/controller/post_controller.dart';
 import '../../../core/common/error_text.dart';
 import '../../../models/post_model.dart';
 import '../../../models/user_model.dart';
+import '../../../responsive/responsive.dart';
 import '../../auth/controller/auth_controller.dart';
 import 'widgets/comment_card.dart';
 
@@ -55,13 +56,15 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                 children: [
                   PostCard(post: post),
                   if (!isGuest)
-                    TextField(
-                      onSubmitted: (val) => addComment(post, user),
-                      controller: commentController,
-                      decoration: const InputDecoration(
-                          hintText: 'What are your thoughts?',
-                          border: InputBorder.none,
-                          contentPadding: EdgeInsets.all(8)),
+                    Responsive(
+                      child: TextField(
+                        onSubmitted: (val) => addComment(post, user),
+                        controller: commentController,
+                        decoration: const InputDecoration(
+                            hintText: 'What are your thoughts?',
+                            border: InputBorder.none,
+                            contentPadding: EdgeInsets.all(8)),
+                      ),
                     ),
                   ref.watch(postCommentsProvider(widget.postId)).when(
                         data: (comments) {
@@ -70,7 +73,8 @@ class _CommentsScreenState extends ConsumerState<CommentsScreen> {
                                 shrinkWrap: true,
                                 itemCount: comments.length,
                                 itemBuilder: (context, index) {
-                                  return CommentCard(comment: comments[index]);
+                                  return CommentCard(
+                                      comment: comments[index]);
                                 }),
                           );
                         },
