@@ -61,7 +61,7 @@ class PostCard extends ConsumerWidget {
       child: Column(
         children: [
           Container(
-            padding: const EdgeInsets.symmetric(vertical: 10),
+            padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 20),
             decoration:
                 BoxDecoration(color: currentTheme.drawerTheme.backgroundColor),
             child: Row(
@@ -104,6 +104,7 @@ class PostCard extends ConsumerWidget {
                           vertical: 4,
                           horizontal: 16,
                         ).copyWith(right: 0),
+                        margin: EdgeInsets.symmetric(horizontal: 35),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -186,7 +187,7 @@ class PostCard extends ConsumerWidget {
                             if (isTypeImage)
                               SizedBox(
                                 height:
-                                    MediaQuery.of(context).size.height * 0.33,
+                                    MediaQuery.of(context).size.height * 0.55,
                                 width: double.infinity,
                                 child: Image.network(
                                   post.link!,

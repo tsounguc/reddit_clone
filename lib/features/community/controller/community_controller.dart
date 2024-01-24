@@ -156,7 +156,6 @@ class CommunityController extends StateNotifier<bool> {
   }
 
   Stream<List<Community>> getUserCommunities(String uid) {
-    debugPrint(uid);
     return _communityRepository.getUserCommunities(uid);
   }
 

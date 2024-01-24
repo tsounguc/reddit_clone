@@ -64,7 +64,6 @@ class CommunityRepository {
   }
 
   Stream<List<Community>> getUserCommunities(String uid) {
-    debugPrint(uid);
     return _communities
         .where('members', arrayContains: uid)
         .snapshots() // This is a query snapshot

@@ -44,7 +44,7 @@ class CommunityScreen extends ConsumerWidget {
                   headerSliverBuilder: (context, innerBoxIsScrolled) {
                     return [
                       SliverAppBar(
-                        expandedHeight: 150,
+                        expandedHeight: 350,
                         floating: true,
                         snap: true,
                         flexibleSpace: Stack(children: [
@@ -64,13 +64,15 @@ class CommunityScreen extends ConsumerWidget {
                               Align(
                                 alignment: Alignment.topLeft,
                                 child: CircleAvatar(
-                                  backgroundImage: NetworkImage(community.avatar),
+                                  backgroundImage:
+                                      NetworkImage(community.avatar),
                                   radius: 35,
                                 ),
                               ),
                               const SizedBox(height: 5),
                               Row(
-                                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
                                     'r/${community.name}',

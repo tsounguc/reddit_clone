@@ -28,7 +28,7 @@ class UserProfileScreen extends ConsumerWidget {
                   headerSliverBuilder: (context, innerBoxIsScrolled) {
                     return [
                       SliverAppBar(
-                        expandedHeight: 250,
+                        expandedHeight: 350,
                         floating: true,
                         snap: true,
                         flexibleSpace: Stack(children: [
@@ -98,7 +98,6 @@ class UserProfileScreen extends ConsumerWidget {
                             shrinkWrap: true,
                             itemCount: posts.length,
                             itemBuilder: (BuildContext context, int index) {
-                              print(posts[index].title);
                               final post = posts[index];
                               return PostCard(post: post);
                             },
